@@ -1,49 +1,59 @@
+# distance_reranker_agent.py
 from google.adk.agents import Agent
-from google.adk.models.lite_llm import LiteLlm
+import googlemaps
+import os
+import json
 
-#WS Edit: Lots to fix here
+gmaps = googlemaps.Client(key=os.getenv("Maps_API_KEY"))
 
-def search_flights(from_airport : str, to_airport : str, date_of_flight : str) -> dict:
-    """
-    Searches for available flights between two airports on a specified date.
+def calculate_distance(patient_address: str, doctor_address: str) -> dict:
+    try:
+        result = gmaps.distance_matrix(
+            origins=[patient_address],
+            destinations=[doctor_address],
+            mode="driving",
+            units="imperial"
+        )
+        miles = result["rows"][0]["elements"][0]["distance"]["text"]
+        return {"status": "success", "miles": miles}
+    except Exception as e:
+        return {"status": "error", "error_message": str(e)}
 
-    Args:
-        from_airport (str): The IATA code or name of the departure airport.
-        to_airport (str): The IATA code or name of the destination airport.
-        date_of_flight (str): The date of the flight in 'YYYY-MM-DD' format.
-    Returns:
-        dict: A dictionary containing a list of available flights, where each flight is represented as a dictionary with keys:
-            - 'flight_number' (str): The flight's unique identifier.
-            - 'from' (str): The departure airport.
-            - 'to' (str): The destination airport.
-            - 'date' (str): The date of the flight.
-            - 'price' (float): The price of the flight.
-    """
+def rerank_doctors_by_distance(patient_address: str) -> dict:
+    try:
+        with open("doctors.json", "r") as f:
+            doctors = json.load(f)
+    except Exception as e:
+        return {"status": "error", "error_message": f"Could not load doctor data: {str(e)}"}
 
+    ranked = []
+    for doc in doctors:
+        result = calculate_distance(patient_address, doc["address"])
+        if result["status"] == "success":
+            miles = float(result["miles"].replace("mi", "").strip())
+            doc["distance"] = miles
+        else:
+            doc["distance"] = float("inf")
+        ranked.append(doc)
+
+    # Sort and take top 3
+    sorted_doctors = sorted(ranked, key=lambda d: d["distance"])[:3]
+
+    output = "\n".join(
+        f"{doc['name']} – {doc['distance']} mi – {doc.get('experience', '?')} yrs – rated {doc.get('score', '?')}"
+        for doc in sorted_doctors
+    )
 
     return {
-        "flights": [
-            {
-                "flight_number": "AB123",
-                "from": from_airport,
-                "to": to_airport,
-                "date": date_of_flight,
-                "price": 199.99
-            },
-            {
-                "flight_number": "CD456",
-                "from": from_airport,
-                "to": to_airport,
-                "date": date_of_flight,
-                "price": 299.99
-            }
-        ]
+        "status": "success",
+        "report": "Here are the top 3 closest doctors:\n\n" + output
     }
 
-flight_search_agent = Agent(
-    model=LiteLlm(model="openai/gpt-4o"),
-    name='flight_search_agent',
-    description='An agent that helps with searching for flights.',
-    instruction='Use the available tools to search for flights.',
-    tools=[search_flights]
+# NOTE: The agent variable MUST be named `root_agent`.
+root_agent = Agent(
+    name="distance_reranker_agent",
+    model="gpt-4o",  # OpenAI model
+    description="Reranks doctors based on user preferences and distance from the patient.",
+    instruction="You are an agent that finds nearby doctors based on preferences.",
+    tools=[rerank_doctors_by_distance]
 )
