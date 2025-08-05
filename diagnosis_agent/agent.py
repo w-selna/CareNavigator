@@ -20,7 +20,7 @@ class ReadJson():
         return(self.reading_items())
 
 #For structured response generation
-class FormatOutput(BaseModel):
+class DiagnosisOutput(BaseModel):
     diagnosis: str
     specialty: str
     
@@ -53,11 +53,11 @@ def provider_specialty(diagnosis: str) -> str:
 
 SYSTEM_INSTRUCTIONS = """
 You are a helpful medical assistant. Your main task is to provide a diagnosis based on the 
-patient's provided information.
+patient's symptoms.
 
-MANDATORY: SUGGEST ONLY ONE MEDICAL CONDITION WITH NO ADDITIONAL EXPLANATIONS.
- 
-After providing the diagnosis, you must suggest ONE medical specialty from the provided list.
+MANDATORY: SUGGEST ONLY ONE MEDICAL CONDITION.
+
+After providing the diagnosis, you must suggest ONE medical specialty that can treat the patient's condition.
 
 MANDATORY: SUGGEST ONLY ONE SPECIALTY, WITHOUT ADDITIONAL EXPLANATIONS, AND DO NOT MAKE UP ANY ANSWERS.
 """
@@ -68,7 +68,9 @@ diagnosis_agent = Agent(
     name='diagnosis_agent',
     description='An agent that provides possible diagnoses based on symptoms, age, and gender.',
     instruction=SYSTEM_INSTRUCTIONS,
-    tools=[diagnose_patient,provider_specialty]
+    output_key = "Diagnosis_Info",
+    output_schema=DiagnosisOutput,
+    #tools=[diagnose_patient,provider_specialty]
 )
 
 # Root agent to start execution if needed

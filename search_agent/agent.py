@@ -194,10 +194,9 @@ search_agent = Agent(
     From this list, visit each doctor profile to summarize their information.
     Then, give the entire list of doctors and summaries to the user.
     Any follow-on questions about the doctor should be answered by the information in their profile.
-    Use the get_doctors_list function to retrieve the list of doctors.
-    Use the parse_doctor_information function to retrieve the information about a specific doctor from their profile.
+    Use tools as needed.
     If the request is outside the scope of finding a doctor profile, politely decline the request.
-    """,
+    """, ## This could probably be simplified.
     tools= [get_doctors_list, parse_doctor_information]
 )
 
