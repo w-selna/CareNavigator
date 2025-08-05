@@ -8,13 +8,22 @@ from dotenv import load_dotenv
 # Import Google ADK components
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
-
+from pathlib import Path
 # Load environment variables
 load_dotenv()
 
 # Initialize Google Maps client
-gmaps = googlemaps.Client(key=os.getenv("GOOGLE_MAPS_API_KEY"))
+# Load environment variables from the correct path
+current_dir = Path(__file__).parent
+env_path = current_dir / '.env'
+load_dotenv(env_path)
 
+# Debug: Check if API key is loaded
+api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+if not api_key:
+    raise ValueError("GOOGLE_MAPS_API_KEY not found in environment variables")
+
+gmaps = googlemaps.Client(key=api_key)
 
 # --- Tool function for ADK ---
 def rerank_doctors_by_distance(patient_address: str) -> str:
@@ -28,7 +37,13 @@ def rerank_doctors_by_distance(patient_address: str) -> str:
         str: Formatted string with top 3 doctors ranked by distance.
     """
     try:
-        with open("doctor_data.json", "r") as f:
+        # current_dir = os.path.dirname(os.path.abspath(__file__))
+        # json_path = os.path.join(current_dir, "doctor_data.json")
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        # Go up to CareNavigator directory, then into assets
+        assets_path = os.path.join(os.path.dirname(current_dir), "assets", "doctor_data_test100.json")
+
+        with open(assets_path, "r") as f:
             doctors = json.load(f)
     except Exception as e:
         return f"Error loading doctors: {e}"

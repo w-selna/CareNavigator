@@ -1,3 +1,3 @@
-from . import maps_agent
+from . import agent
 
 
