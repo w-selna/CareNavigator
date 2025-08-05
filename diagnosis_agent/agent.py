@@ -72,6 +72,6 @@ diagnosis_agent = Agent(
 )
 
 # Root agent to start execution if needed
-root_agent = diagnosis_agent
+#root_agent = diagnosis_agent
 
 
