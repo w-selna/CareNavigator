@@ -1,0 +1,779 @@
+[
+  {
+    "Provider Type":"Acupuncture"
+  },
+  {
+    "Provider Type":"Addiction Medicine"
+  },
+  {
+    "Provider Type":"Addiction Psychiatry"
+  },
+  {
+    "Provider Type":"Addiction and Substance Abuse Counseling"
+  },
+  {
+    "Provider Type":"Advanced Heart Failure & Transplant Cardiology"
+  },
+  {
+    "Provider Type":"Aerospace Medicine"
+  },
+  {
+    "Provider Type":"Allergy & Immunology"
+  },
+  {
+    "Provider Type":"Alternative Care"
+  },
+  {
+    "Provider Type":"Anatomic & Clinical Pathology"
+  },
+  {
+    "Provider Type":"Anatomic Pathology"
+  },
+  {
+    "Provider Type":"Anesthesiology"
+  },
+  {
+    "Provider Type":"Anesthesiology (Anesthesiology Assistant)"
+  },
+  {
+    "Provider Type":"Art Therapy"
+  },
+  {
+    "Provider Type":"Assisted Living"
+  },
+  {
+    "Provider Type":"Assistive Therapy"
+  },
+  {
+    "Provider Type":"Athletic Training"
+  },
+  {
+    "Provider Type":"Attendant Care"
+  },
+  {
+    "Provider Type":"Audiology"
+  },
+  {
+    "Provider Type":"Audiology (Audiology Assistant)"
+  },
+  {
+    "Provider Type":"Audiology Technology"
+  },
+  {
+    "Provider Type":"Bariatric Medicine"
+  },
+  {
+    "Provider Type":"Bariatric Surgery"
+  },
+  {
+    "Provider Type":"Behavior Analysis"
+  },
+  {
+    "Provider Type":"Blood Banking & Transfusion Medicine"
+  },
+  {
+    "Provider Type":"Brain Injury Medicine"
+  },
+  {
+    "Provider Type":"Cardiology"
+  },
+  {
+    "Provider Type":"Cardiothoracic Surgery"
+  },
+  {
+    "Provider Type":"Cardiovascular Technology"
+  },
+  {
+    "Provider Type":"Chemical Pathology"
+  },
+  {
+    "Provider Type":"Child & Adolescent Psychiatry"
+  },
+  {
+    "Provider Type":"Child Abuse Pediatrics"
+  },
+  {
+    "Provider Type":"Chiropractic"
+  },
+  {
+    "Provider Type":"Clinical Cardiac Electrophysiology"
+  },
+  {
+    "Provider Type":"Clinical Exercise Physiology"
+  },
+  {
+    "Provider Type":"Clinical Informatics"
+  },
+  {
+    "Provider Type":"Clinical Lipidology"
+  },
+  {
+    "Provider Type":"Clinical Neurophysiology"
+  },
+  {
+    "Provider Type":"Clinical Pathology"
+  },
+  {
+    "Provider Type":"Clinical Pharmacology"
+  },
+  {
+    "Provider Type":"Clinical Psychology"
+  },
+  {
+    "Provider Type":"Colorectal Surgery"
+  },
+  {
+    "Provider Type":"Community Health Work"
+  },
+  {
+    "Provider Type":"Congenital Cardiac Surgery"
+  },
+  {
+    "Provider Type":"Cosmetic, Plastic & Reconstructive Surgery"
+  },
+  {
+    "Provider Type":"Counseling"
+  },
+  {
+    "Provider Type":"Critical Care Medicine"
+  },
+  {
+    "Provider Type":"Critical Care Surgery"
+  },
+  {
+    "Provider Type":"Cytopathology"
+  },
+  {
+    "Provider Type":"Dance Therapy"
+  },
+  {
+    "Provider Type":"Darkroom Technology"
+  },
+  {
+    "Provider Type":"Dental Hygiene"
+  },
+  {
+    "Provider Type":"Dentistry"
+  },
+  {
+    "Provider Type":"Dermatology"
+  },
+  {
+    "Provider Type":"Dermatopathology"
+  },
+  {
+    "Provider Type":"Developmental Therapy"
+  },
+  {
+    "Provider Type":"Developmental-Behavioral Pediatrics"
+  },
+  {
+    "Provider Type":"Diagnostic Laboratory & Dermatologic Immunology"
+  },
+  {
+    "Provider Type":"Diagnostic Radiology"
+  },
+  {
+    "Provider Type":"Diagnostic Ultrasound Imaging"
+  },
+  {
+    "Provider Type":"Dietetics"
+  },
+  {
+    "Provider Type":"Ear, Nose, and Throat"
+  },
+  {
+    "Provider Type":"Electrodiagnostic Medicine"
+  },
+  {
+    "Provider Type":"Emergency Medical Technology (EMT)"
+  },
+  {
+    "Provider Type":"Emergency Medicine"
+  },
+  {
+    "Provider Type":"Endocrinology, Diabetes & Metabolism"
+  },
+  {
+    "Provider Type":"Endodontics"
+  },
+  {
+    "Provider Type":"Family Medicine"
+  },
+  {
+    "Provider Type":"Female Pelvic Medicine & Reconstructive Surgery"
+  },
+  {
+    "Provider Type":"Forensic Pathology"
+  },
+  {
+    "Provider Type":"Forensic Psychiatry"
+  },
+  {
+    "Provider Type":"Gastroenterology"
+  },
+  {
+    "Provider Type":"General Dentistry (Dental Assistant)"
+  },
+  {
+    "Provider Type":"General Surgery"
+  },
+  {
+    "Provider Type":"Genetic Counseling"
+  },
+  {
+    "Provider Type":"Genetics"
+  },
+  {
+    "Provider Type":"Geriatric Medicine"
+  },
+  {
+    "Provider Type":"Health Education"
+  },
+  {
+    "Provider Type":"Healthcare Coordination"
+  },
+  {
+    "Provider Type":"Hearing & Speech Therapy"
+  },
+  {
+    "Provider Type":"Hearing Instruments"
+  },
+  {
+    "Provider Type":"Hematology"
+  },
+  {
+    "Provider Type":"Hematopathology"
+  },
+  {
+    "Provider Type":"Hepatology"
+  },
+  {
+    "Provider Type":"Holistic Medicine"
+  },
+  {
+    "Provider Type":"Home Health (Aide)"
+  },
+  {
+    "Provider Type":"Homeopathy"
+  },
+  {
+    "Provider Type":"Hospice & Palliative Medicine"
+  },
+  {
+    "Provider Type":"Hospital Medicine"
+  },
+  {
+    "Provider Type":"Immunopathology"
+  },
+  {
+    "Provider Type":"Infectious Disease Medicine"
+  },
+  {
+    "Provider Type":"Internal Medicine"
+  },
+  {
+    "Provider Type":"Interventional Cardiology"
+  },
+  {
+    "Provider Type":"Labor Coaching (Doula)"
+  },
+  {
+    "Provider Type":"Laboratory Management Technology"
+  },
+  {
+    "Provider Type":"Laboratory Medicine"
+  },
+  {
+    "Provider Type":"Lactation Consulting"
+  },
+  {
+    "Provider Type":"Legal Medicine"
+  },
+  {
+    "Provider Type":"Marriage & Family Therapy"
+  },
+  {
+    "Provider Type":"Massage Therapy"
+  },
+  {
+    "Provider Type":"Mastectomy Fitting"
+  },
+  {
+    "Provider Type":"Maternal-Fetal Medicine"
+  },
+  {
+    "Provider Type":"Mechanotherapy"
+  },
+  {
+    "Provider Type":"Medical Editing"
+  },
+  {
+    "Provider Type":"Medical Ethics"
+  },
+  {
+    "Provider Type":"Medical Examiner"
+  },
+  {
+    "Provider Type":"Medical Informatics"
+  },
+  {
+    "Provider Type":"Medical Microbiology"
+  },
+  {
+    "Provider Type":"Medical Physics"
+  },
+  {
+    "Provider Type":"Medical Technology"
+  },
+  {
+    "Provider Type":"Medical Toxicology"
+  },
+  {
+    "Provider Type":"Mental Health"
+  },
+  {
+    "Provider Type":"Midwifery"
+  },
+  {
+    "Provider Type":"Molecular Genetic Pathology"
+  },
+  {
+    "Provider Type":"Music Therapy"
+  },
+  {
+    "Provider Type":"Naprapathy"
+  },
+  {
+    "Provider Type":"Naturopathy"
+  },
+  {
+    "Provider Type":"Neonatal Medicine"
+  },
+  {
+    "Provider Type":"Nephrology"
+  },
+  {
+    "Provider Type":"Neurodevelopmental Disabilities"
+  },
+  {
+    "Provider Type":"Neurogenetics"
+  },
+  {
+    "Provider Type":"Neurology"
+  },
+  {
+    "Provider Type":"Neuromusculoskeletal Medicine"
+  },
+  {
+    "Provider Type":"Neuropathology"
+  },
+  {
+    "Provider Type":"Neuropsychology"
+  },
+  {
+    "Provider Type":"Neuroradiology"
+  },
+  {
+    "Provider Type":"Neurosurgery"
+  },
+  {
+    "Provider Type":"Neurotology"
+  },
+  {
+    "Provider Type":"Nuclear Medicine"
+  },
+  {
+    "Provider Type":"Nuclear Radiology"
+  },
+  {
+    "Provider Type":"Nurse Anesthesiology"
+  },
+  {
+    "Provider Type":"Nursing (Clinical Nurse Specialist)"
+  },
+  {
+    "Provider Type":"Nursing (Nurse Practitioner)"
+  },
+  {
+    "Provider Type":"Nursing (Registered Nurse)"
+  },
+  {
+    "Provider Type":"Nursing Services"
+  },
+  {
+    "Provider Type":"Obstetrics & Gynecology"
+  },
+  {
+    "Provider Type":"Occupational & Physical Therapy"
+  },
+  {
+    "Provider Type":"Occupational Medicine"
+  },
+  {
+    "Provider Type":"Occupational Therapy"
+  },
+  {
+    "Provider Type":"Occupational Therapy (Occupational Therapy Assistant)"
+  },
+  {
+    "Provider Type":"Ocularistry"
+  },
+  {
+    "Provider Type":"Oncology"
+  },
+  {
+    "Provider Type":"Ophthalmic Technology"
+  },
+  {
+    "Provider Type":"Ophthalmology"
+  },
+  {
+    "Provider Type":"Ophthamology (Ophthalmic Assistant)"
+  },
+  {
+    "Provider Type":"Optometry"
+  },
+  {
+    "Provider Type":"Optometry (Optometry Assistant)"
+  },
+  {
+    "Provider Type":"Optometry Technology"
+  },
+  {
+    "Provider Type":"Oral & Maxillofacial Pathology"
+  },
+  {
+    "Provider Type":"Oral & Maxillofacial Radiology"
+  },
+  {
+    "Provider Type":"Oral & Maxillofacial Surgery"
+  },
+  {
+    "Provider Type":"Orthodontics & Dentofacial Orthopedics"
+  },
+  {
+    "Provider Type":"Orthopedic Hand Surgery"
+  },
+  {
+    "Provider Type":"Orthopedic Spine Surgery"
+  },
+  {
+    "Provider Type":"Orthopedic Surgery"
+  },
+  {
+    "Provider Type":"Orthoptics"
+  },
+  {
+    "Provider Type":"Orthotic Fitting"
+  },
+  {
+    "Provider Type":"Other"
+  },
+  {
+    "Provider Type":"Pain Medicine"
+  },
+  {
+    "Provider Type":"Pathology Technology"
+  },
+  {
+    "Provider Type":"Pediatric Allergy & Immunology"
+  },
+  {
+    "Provider Type":"Pediatric Anesthesiology"
+  },
+  {
+    "Provider Type":"Pediatric Cardiology"
+  },
+  {
+    "Provider Type":"Pediatric Cardiothoracic Surgery"
+  },
+  {
+    "Provider Type":"Pediatric Chiropractic"
+  },
+  {
+    "Provider Type":"Pediatric Critical Care Medicine"
+  },
+  {
+    "Provider Type":"Pediatric Dentistry"
+  },
+  {
+    "Provider Type":"Pediatric Dermatology"
+  },
+  {
+    "Provider Type":"Pediatric Diagnostic Laboratory Immunology"
+  },
+  {
+    "Provider Type":"Pediatric Dietetics"
+  },
+  {
+    "Provider Type":"Pediatric Emergency Medicine"
+  },
+  {
+    "Provider Type":"Pediatric Endocrinology"
+  },
+  {
+    "Provider Type":"Pediatric Gastroenterology"
+  },
+  {
+    "Provider Type":"Pediatric Hematology & Oncology"
+  },
+  {
+    "Provider Type":"Pediatric Hospice & Palliative Medicine"
+  },
+  {
+    "Provider Type":"Pediatric Infectious Disease Medicine"
+  },
+  {
+    "Provider Type":"Pediatric Medical Genetics"
+  },
+  {
+    "Provider Type":"Pediatric Medical Toxicology"
+  },
+  {
+    "Provider Type":"Pediatric Medicine"
+  },
+  {
+    "Provider Type":"Pediatric Nephrology"
+  },
+  {
+    "Provider Type":"Pediatric Neurodevelopmental Disabilities"
+  },
+  {
+    "Provider Type":"Pediatric Neurology"
+  },
+  {
+    "Provider Type":"Pediatric Neurosurgery"
+  },
+  {
+    "Provider Type":"Pediatric Nursing"
+  },
+  {
+    "Provider Type":"Pediatric Nursing (Nurse Practitioner)"
+  },
+  {
+    "Provider Type":"Pediatric Occupational Therapy"
+  },
+  {
+    "Provider Type":"Pediatric Ophthalmology"
+  },
+  {
+    "Provider Type":"Pediatric Optometry"
+  },
+  {
+    "Provider Type":"Pediatric Orthopedic Surgery"
+  },
+  {
+    "Provider Type":"Pediatric Otolaryngology (Ear, Nose & Throat)"
+  },
+  {
+    "Provider Type":"Pediatric Pathology"
+  },
+  {
+    "Provider Type":"Pediatric Physical Therapy"
+  },
+  {
+    "Provider Type":"Pediatric Plastic Surgery"
+  },
+  {
+    "Provider Type":"Pediatric Pulmonology"
+  },
+  {
+    "Provider Type":"Pediatric Radiology"
+  },
+  {
+    "Provider Type":"Pediatric Rheumatology"
+  },
+  {
+    "Provider Type":"Pediatric Sleep Medicine"
+  },
+  {
+    "Provider Type":"Pediatric Sports Medicine"
+  },
+  {
+    "Provider Type":"Pediatric Surgery"
+  },
+  {
+    "Provider Type":"Pediatric Transplant Hepatology"
+  },
+  {
+    "Provider Type":"Pediatric Urology"
+  },
+  {
+    "Provider Type":"Pediatrics"
+  },
+  {
+    "Provider Type":"Pediatrics Physical Medicine & Rehabilitation"
+  },
+  {
+    "Provider Type":"Periodontics"
+  },
+  {
+    "Provider Type":"Personal Care Attendance"
+  },
+  {
+    "Provider Type":"Personal Emergency Response Attendance"
+  },
+  {
+    "Provider Type":"Pharmaceutical Medicine"
+  },
+  {
+    "Provider Type":"Pharmacology"
+  },
+  {
+    "Provider Type":"Pharmacotherapy"
+  },
+  {
+    "Provider Type":"Pharmacy"
+  },
+  {
+    "Provider Type":"Pharmacy Clinician Services"
+  },
+  {
+    "Provider Type":"Phlebology"
+  },
+  {
+    "Provider Type":"Physical Medicine & Rehabilitation"
+  },
+  {
+    "Provider Type":"Physical Therapy"
+  },
+  {
+    "Provider Type":"Physical Therapy (Physical Therapy Assistant)"
+  },
+  {
+    "Provider Type":"Physician Assistant (PA)"
+  },
+  {
+    "Provider Type":"Podiatric Surgery"
+  },
+  {
+    "Provider Type":"Podiatry"
+  },
+  {
+    "Provider Type":"Podiatry (Podiatry Assistant)"
+  },
+  {
+    "Provider Type":"Poetry Therapy"
+  },
+  {
+    "Provider Type":"Practical Nursing (Licensed Practical Nurse)"
+  },
+  {
+    "Provider Type":"Preventive Medicine"
+  },
+  {
+    "Provider Type":"Prosthetics"
+  },
+  {
+    "Provider Type":"Prosthetics & Orthotics"
+  },
+  {
+    "Provider Type":"Psychiatry"
+  },
+  {
+    "Provider Type":"Psychology"
+  },
+  {
+    "Provider Type":"Psychosomatic Medicine"
+  },
+  {
+    "Provider Type":"Psychotherapy"
+  },
+  {
+    "Provider Type":"Public Health & General Preventive Medicine"
+  },
+  {
+    "Provider Type":"Pulmonary Disease"
+  },
+  {
+    "Provider Type":"Pulmonary Function Technology"
+  },
+  {
+    "Provider Type":"Radiation Oncology"
+  },
+  {
+    "Provider Type":"Radioisotopic Pathology"
+  },
+  {
+    "Provider Type":"Radiologic Technology"
+  },
+  {
+    "Provider Type":"Radiology"
+  },
+  {
+    "Provider Type":"Radiology (Practitioner Assistant)"
+  },
+  {
+    "Provider Type":"Recreation Therapy"
+  },
+  {
+    "Provider Type":"Reflexology"
+  },
+  {
+    "Provider Type":"Reproductive Endocrinology & Infertility"
+  },
+  {
+    "Provider Type":"Research"
+  },
+  {
+    "Provider Type":"Respiratory Therapy"
+  },
+  {
+    "Provider Type":"Rheumatology"
+  },
+  {
+    "Provider Type":"Rural Medicine"
+  },
+  {
+    "Provider Type":"Sleep Medicine"
+  },
+  {
+    "Provider Type":"Social Work"
+  },
+  {
+    "Provider Type":"Spa Medicine"
+  },
+  {
+    "Provider Type":"Speech-Language Pathology"
+  },
+  {
+    "Provider Type":"Spinal Cord Injury Medicine"
+  },
+  {
+    "Provider Type":"Sports Medicine"
+  },
+  {
+    "Provider Type":"Surgical (Selective) Pathology"
+  },
+  {
+    "Provider Type":"Surgical Assistance"
+  },
+  {
+    "Provider Type":"Transplant Hepatology"
+  },
+  {
+    "Provider Type":"Transplant Surgery"
+  },
+  {
+    "Provider Type":"Undersea & Hyperbaric Medicine"
+  },
+  {
+    "Provider Type":"Urgent Care Medicine"
+  },
+  {
+    "Provider Type":"Urology"
+  },
+  {
+    "Provider Type":"Vascular & Interventional Radiology"
+  },
+  {
+    "Provider Type":"Vascular Medicine"
+  },
+  {
+    "Provider Type":"Vascular Neurology"
+  },
+  {
+    "Provider Type":"Vascular Surgery"
+  }
+]

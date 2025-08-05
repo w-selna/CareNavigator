@@ -1,35 +1,77 @@
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
+from pydantic import BaseModel
+import json
 
-#WS Edit: Lots to fix here.
 
-def diagnosis_agent(flight_number: str, from_airport: str, to_airport: str, date_of_flight: str) -> dict:
-    """
-    Books a flight with the specified details.
+class ReadJson():
+    def __init__(self):
+        self.list_of_providers=[]
+        self.list_of_dicts=[]
+    def init_json(self):
+        with open('providers_name.json', 'r') as f:
+            self.list_of_dicts = json.load(f)
+    def reading_items(self):
+        for items in self.list_of_dicts:
+            self.list_of_providers.append(items['Provider Type'])
+        return(self.list_of_providers)
+    def create_list(self):
+        self.init_json()
+        return(self.reading_items())
+
+#For structured response generation
+class FormatOutput(BaseModel):
+    diagnosis: str
+    specialty: str
+    
+def diagnose_patient(patient_info: str) -> str:
+    f"""
+    Simulates a diagnosis process based on patient data.
 
     Args:
-        flight_number (str): The flight number to book.
-        from_airport (str): The IATA code of the departure airport.
-        to_airport (str): The IATA code of the destination airport.
-        date_of_flight (str): The date of the flight in 'YYYY-MM-DD' format.
+        {patient_info} includes:
+          symptoms (list): A list of symptoms reported by the patient.
+          age (int): The age of the patient.
+          gender (str): The gender of the patient (e.g., 'male', 'female', 'other').
 
     Returns:
-        dict: A dictionary containing the flight booking details with keys 'flight_number', 'from', 'to', 'date', and 'Airline confirmation'.
+        str: one diagnosis with no more than three words.
+        
     """
 
-    return {
-        "flight_number": flight_number,
-        "from": from_airport,
-        "to": to_airport,
-        "date": date_of_flight,
-        "Airline confirmation": "CFKAKLQ12",
-    }
+def provider_specialty(diagnosis: str) -> str:  
+    f"""
+    Searches for specialty to MATCH the diagnosis from the function --> diagnose_patient.
 
-flight_booking_agent = Agent(
+    Args:
+        Diagnosis includes:
+          str: diagnosis: {diagnosis}
+
+    Returns:
+        str: One specialty from the following list that matches the diagnosis for treatment: {ReadJson().create_list()}
+    """
+
+SYSTEM_INSTRUCTIONS = """
+You are a helpful medical assistant. Your main task is to provide a diagnosis based on the 
+patient's provided information.
+
+MANDATORY: SUGGEST ONLY ONE MEDICAL CONDITION WITH NO ADDITIONAL EXPLANATIONS.
+ 
+After providing the diagnosis, you must suggest ONE medical specialty from the provided list.
+
+MANDATORY: SUGGEST ONLY ONE SPECIALTY, WITHOUT ADDITIONAL EXPLANATIONS, AND DO NOT MAKE UP ANY ANSWERS.
+"""
+
+
+diagnosis_agent = Agent(
     model=LiteLlm(model="openai/gpt-4o"),
-    name='flight_booking_agent',
-    description='An agent that helps with booking flights.',
-    instruction='Assist users in booking flights based on user input.',
-    tools=[diagnosis_agent]
+    name='diagnosis_agent',
+    description='An agent that provides possible diagnoses based on symptoms, age, and gender.',
+    instruction=SYSTEM_INSTRUCTIONS,
+    tools=[diagnose_patient,provider_specialty]
 )
+
+# Root agent to start execution if needed
+root_agent = diagnosis_agent
+
 
