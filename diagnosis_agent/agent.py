@@ -20,44 +20,19 @@ class ReadJson():
         return(self.reading_items())
 
 #For structured response generation
-class FormatOutput(BaseModel):
+class DiagnosisOutput(BaseModel):
     diagnosis: str
     specialty: str
     
-def diagnose_patient(patient_info: str) -> str:
-    f"""
-    Simulates a diagnosis process based on patient data.
 
-    Args:
-        {patient_info} includes:
-          symptoms (list): A list of symptoms reported by the patient.
-          age (int): The age of the patient.
-          gender (str): The gender of the patient (e.g., 'male', 'female', 'other').
-
-    Returns:
-        str: one diagnosis with no more than three words.
-        
-    """
-
-def provider_specialty(diagnosis: str) -> str:  
-    f"""
-    Searches for specialty to MATCH the diagnosis from the function --> diagnose_patient.
-
-    Args:
-        Diagnosis includes:
-          str: diagnosis: {diagnosis}
-
-    Returns:
-        str: One specialty from the following list that matches the diagnosis for treatment: {ReadJson().create_list()}
-    """
 
 SYSTEM_INSTRUCTIONS = """
 You are a helpful medical assistant. Your main task is to provide a diagnosis based on the 
-patient's provided information.
+patient's symptoms.
 
-MANDATORY: SUGGEST ONLY ONE MEDICAL CONDITION WITH NO ADDITIONAL EXPLANATIONS.
- 
-After providing the diagnosis, you must suggest ONE medical specialty from the provided list.
+MANDATORY: SUGGEST ONLY ONE MEDICAL CONDITION.
+
+After providing the diagnosis, you must suggest ONE medical specialty that can treat the patient's condition.
 
 MANDATORY: SUGGEST ONLY ONE SPECIALTY, WITHOUT ADDITIONAL EXPLANATIONS, AND DO NOT MAKE UP ANY ANSWERS.
 """
@@ -68,10 +43,20 @@ diagnosis_agent = Agent(
     name='diagnosis_agent',
     description='An agent that provides possible diagnoses based on symptoms, age, and gender.',
     instruction=SYSTEM_INSTRUCTIONS,
-    tools=[diagnose_patient,provider_specialty]
+    output_key='diagnosis',
+    output_schema=DiagnosisOutput
 )
 
-# Root agent to start execution if needed
-#root_agent = diagnosis_agent
+display_diagnosis_agent = Agent(
+    model=LiteLlm(model="openai/gpt-4o"),
+    name='display_diagnosis_agent',
+    description='An agent that provides an explanation of diagnosis from using the structured output of diagnosis_agent.',
+    instruction='''Display diagnosis for patient's symptoms and suggest medical specialty who can treat the patient based on the
+    information below. Inform the user that these are preliminary diagnosis only.
+
+    {diagnosis}''',
+    
+)
+
 
 
