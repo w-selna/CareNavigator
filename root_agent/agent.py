@@ -1,7 +1,7 @@
-from google.adk.agents import Agent
-#from diagnosis_agent.agent import diagnosis_agent # uncomment once sub agent once it is up and running.
+from google.adk.agents import Agent, SequentialAgent
+from diagnosis_agent.agent import diagnosis_agent , display_diagnosis_agent# uncomment once sub agent once it is up and running.
 #from maps_agent.agent import maps_agent
-#from search_agent.agent import search_agent
+from search_agent.agent import search_agent
 from google.adk.models.lite_llm import LiteLlm
 
 root_agent = Agent(
@@ -15,6 +15,11 @@ root_agent = Agent(
     "   If you need to find a location on a map or distances between places, use the maps agent." \
     "   If you need to review the insurance accepted by each doctor, use the JSON agent." \
     "Be empathetic and supportive in your responses."#,
-    #sub_agents=[diagnosis_agent#, maps_agent, search_agent # uncomment sub agent once they are up and running.
-    #            ]
+    #sub_agents=[diagnosis_agent,  search_agent  ]
+    sub_agents=[
+        SequentialAgent(
+            name='forecast_and_display_agent',
+            description='An agent that uses sub-agents to get the weather forecast and then display it to the user.',
+            sub_agents=[diagnosis_agent, display_diagnosis_agent])
+        ,  search_agent]
 )
