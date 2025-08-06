@@ -14,7 +14,7 @@ root_agent = Agent(
     "   If you need to searchs for doctors to treat the user, use the search agent. Make a decision about the best doctor for the user based on ratings,proximity, and number of reviews." \
     "   If you need to find a location on a map or distances between places, use the maps agent." \
     "   If you need to review the insurance accepted by each doctor, use the JSON agent." \
-    "Be empathetic and supportive in your responses."#,
+    "Be empathetic and supportive in your responses.",#,
     #sub_agents=[diagnosis_agent,  search_agent  ]
     sub_agents=[
         SequentialAgent(
