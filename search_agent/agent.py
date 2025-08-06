@@ -1,4 +1,3 @@
-import aiohttp
 import json
 import re
 import requests
@@ -86,7 +85,7 @@ def parse_doctor_information(url: str) -> Union[Dict[str, Any], str]:
             - bio (str): Biography text.
             - address (str): Office address.
             - conditions (list[str]): Conditions the doctor frequently treats.
-            - procedures (list[str]): Procedures the doctor performs.
+            - procedures (list[str]): Procedures the doctor frequently performs.
             - insurance_data (list[dict] or None): Parsed insurance plan information, if available.
             - score (str): Rating score from Healthgrades.
             - qty_reviews (str): Total number of reviews.
@@ -102,6 +101,8 @@ def parse_doctor_information(url: str) -> Union[Dict[str, Any], str]:
           if Healthgrades changes its data storage format.
     """
     try:
+        state = "request"
+
         response = requests.get(
             url,
             headers={'User-Agent': 'Mozilla/5.0'},
@@ -112,12 +113,15 @@ def parse_doctor_information(url: str) -> Union[Dict[str, Any], str]:
         soup = BeautifulSoup(response.content, 'html.parser')
 
         # Doctor name
+        state = 'name'
         name = soup.find('h1', class_='summary-provider-name').text.strip()
 
         # Specialty
+        state = 'specialty'
         specialty = soup.find('div', class_='speciality-name-text').text.replace('*', '').strip()
 
         # Years of experience
+        state = 'experience'
         try:
             experience = soup.find('div', class_='years-of-experience-text').text.split(' ')[0].replace('+', '').strip()
             experience = f'{experience} years'
@@ -125,36 +129,46 @@ def parse_doctor_information(url: str) -> Union[Dict[str, Any], str]:
             experience = 'not listed'
 
         # Biography
+        state = 'bio'
         bio = soup.find('p', attrs={'data-qa-target': 'premium-biography'}).text.strip()
 
         # Address
+        state = 'address'
         address = soup.find('address').text.strip()
 
         # Conditions
+        state = 'conditions'
         conditions = [
             condition.split(':')[-1].strip()
             for condition in soup.find('meta', attrs={'name': 'conditions'})['content'].split(',')
         ]
 
         # Procedures
+        state = 'procedures'
         procedures = [
             procedure.split(':')[-1].strip()
             for procedure in soup.find('meta', attrs={'name': 'procedures'})['content'].split(',')
         ]
 
         # Review score and quantity
+        state = 'review'
         score = soup.find('span', class_='score').text.strip()
         qty_reviews = soup.find('span', class_='review-summary-horizontal-scroll__content').text.split(' ')[0].strip()
 
         # Insurance data (from embedded script)
-        insurance_script = soup.find_all('script')[6]
-        insurance_data = None
-        for script in insurance_script.string.split('HG3.profile.pageState || ')[1].split(';'):
-            if 'insuranceAccepted' in script:
-                insurance_data = dict(json.loads(script))['providerProfileModel']['insuranceAccepted']
-                break
+        state = 'insurance'
+        try:
+            insurance_script = soup.find_all('script')[6]
+            insurance_data = None
+            for script in insurance_script.string.split('HG3.profile.pageState || ')[1].split(';'):
+                if 'insuranceAccepted' in script:
+                    insurance_data = dict(json.loads(script))['providerProfileModel']['insuranceAccepted']
+                    break
+        except:
+            insurance_data = None
 
         # Accepting new patients (from utag_data script)
+        state = 'accepting_new_patients'
         script = soup.find('script', string=re.compile(r'utag_data'))
         raw_js = script.string
         pattern = re.compile(r"utag_data\['(.*?)'\]\s*=\s*\"(.*?)\";")
@@ -179,7 +193,7 @@ def parse_doctor_information(url: str) -> Union[Dict[str, Any], str]:
     except Exception as e:
         import traceback
         tb = traceback.extract_tb(e.__traceback__)
-        return f'Error on line {tb[-1].lineno}: {e}'
+        return f'Error in state {state} on line {tb[-1].lineno}: {e}'
 
 
 
@@ -188,15 +202,10 @@ search_agent = Agent(
     name='search_agent',
     description='Retrieve a list of doctor URLs in a given specialty near a given location to compile the data.',
     instruction="""
-    You are a helpful assistant that helps users find doctor profiles in Healthgrades.
-    You will be given a medical specialty and a latitude/longitude indicating the user's location.
-    Your task is to retrieve a list of doctors from Healthgrades that are related to the given specialty and near the given location.
-    From this list, visit each doctor profile to summarize their information.
-    Then, give the entire list of doctors and summaries to the user.
-    Any follow-on questions about the doctor should be answered by the information in their profile.
-    Use tools as needed.
-    If the request is outside the scope of finding a doctor profile, politely decline the request.
-    """, ## This could probably be simplified.
+    You retrieve Healthgrades doctor profiles based on a medical specialty and geographic location.
+    Summarize the doctor information for the user and return only those accepting new patients.
+    Politely decline requests that aren't specifically and immediately related to finding doctor profiles.
+    """,
     tools= [get_doctors_list, parse_doctor_information]
 )
 
