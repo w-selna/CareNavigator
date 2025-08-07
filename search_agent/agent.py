@@ -203,7 +203,8 @@ search_agent = Agent(
     name='search_agent',
     description='Retrieve a list of doctor URLs in a given specialty near a given location to compile the data.',
     instruction="""
-    You retrieve Healthgrades doctor profiles based on a medical specialty and geographic location, most often city and state.
+    You retrieve Healthgrades doctor profiles based on a medical specialty and geographic location.
+    If the location information is missing, request the user's city and state.
     Use your sub-agent, insurance_agent, to check if the doctor accepts the patient's insurance plan before returning the profile.
     Summarize the doctor information for the user and return only those accepting new patients with mathching insurance.
     Refer any requests that aren't specifically and immediately related to finding doctor profiles to the root agent.
@@ -213,4 +214,5 @@ search_agent = Agent(
 )
 
 # root_agent = search_agent
+
 
