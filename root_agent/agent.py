@@ -13,7 +13,9 @@ root_agent = Agent(
         - Assess the patient's symptoms, medical history and demographics. If after being asked for this information they do not tell you some parts of it, work with incomplete information.
         - Diagnose the patient based on their symptoms and assign a medical specialty for that condition.
         - Find a doctor that can treat the patient's condition.
-    """,#,
+        - Verify insurance coverage for the proposed clinician mathes the patients insurance.
+        - Politely decline requests that arn't specifically or immediatly related to the patient's care.
+    """,
     #sub_agents=[diagnosis_agent,  search_agent  ]
     sub_agents=[
         SequentialAgent(
@@ -22,3 +24,4 @@ root_agent = Agent(
             sub_agents=[diagnosis_agent, display_diagnosis_agent])
         ,  search_agent]
 )
+
