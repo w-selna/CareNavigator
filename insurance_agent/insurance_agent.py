@@ -63,41 +63,50 @@ Answer only with JSON in this format:
 insurance_agent = Agent(
     model=LiteLlm(model="openai/gpt-4o", api_key=os.getenv("OPENAI_API_KEY")),
     name="insurance_agent",
-    description="Agent that checks if a doctor's insurance plans match a patient's insurance.",
+    description="Agent that checks if a doctor's insurance plans match a patient's insurance and returns a JSON response.",
     instruction=(
-        "Use the 'check_insurance_match' tool to determine if a doctor accepts a patient's insurance plan."
-        "The tool requires 'doctor_info' (a dictionary with the doctor's details, including 'insurance_plans') "
-        "and 'patient_insurance' (the name of the patient's insurance plan)."
+        "You are an expert insurance matching assistant. "
+        "Your task is to determine if a patient's insurance is accepted by a doctor. "
+        "The user will provide the doctor's accepted insurance plans and the patient's plan. "
+        "Analyze the provided information and **answer ONLY with JSON** in this format: "
+        '{"acceptsInsurance": true or false, "reason": "explanation text"}'
     ),
-    tools=[check_insurance_match],
+    tools=[],  # The agent no longer has any tools
 )
-
 session_service = InMemorySessionService()
-session = asyncio.run(session_service.create_session(
-    app_name="insurance_app",
-    user_id="user_1",
-    session_id="session_1",
-))
+
 runner = Runner(
     agent=insurance_agent,
     app_name="insurance_app",
     session_service=session_service,
 )
 
-doctor_info = {
-    "name": "Dr. Alice",
-    "insurance_plans": ["Blue Cross", "United Healthcare", "Cigna PPO"],
-}
-patient_insurance = "Blue Shield of California"
-
-user_message_text = f"Does Dr. Alice, who accepts {doctor_info['insurance_plans']}, accept my insurance, which is {patient_insurance}?"
-
 async def main():
+    # Define your structured data
+    doctor_info = {
+        "name": "Dr. Alice",
+        "insurance_plans": ["Blue Cross", "United Healthcare", "Cigna PPO"],
+    }
+    patient_insurance = "Blue Shield of California"
+
+    # 🔑 The crucial change: A simple, natural language prompt with all the necessary info
+    user_message_text = (
+        f"Dr. Alice's accepted plans are: {', '.join(doctor_info['insurance_plans'])}. "
+        f"Does she accept my insurance, which is: {patient_insurance}?"
+    )
+
+    # Create a new session
+    session = await session_service.create_session(
+        app_name="insurance_app",
+        user_id="user_1",
+        session_id="session_1",
+    )
+
     user_content = types.Content(role="user", parts=[types.Part(text=user_message_text)])
 
     async for event in runner.run_async(
         user_id="user_1",
-        session_id="session_1",
+        session_id=session.id,
         new_message=user_content,
     ):
         if event.is_final_response():
@@ -105,4 +114,7 @@ async def main():
             print(event.content.parts[0].text)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    if os.getenv("OPENAI_API_KEY") is None:
+        print("Please set the OPENAI_API_KEY environment variable.")
+    else:
+        asyncio.run(main())
