@@ -9,7 +9,7 @@ class ReadJson():
         self.list_of_providers=[]
         self.list_of_dicts=[]
     def init_json(self):
-        with open('providers_name.json', 'r') as f:
+        with open('/home/labadmin/Documents/agentic-ai/CareNavigator/diagnosis_agent/providers_name.json', 'r') as f:
             self.list_of_dicts = json.load(f)
     def reading_items(self):
         for items in self.list_of_dicts:
@@ -23,16 +23,18 @@ class ReadJson():
 class DiagnosisOutput(BaseModel):
     diagnosis: str
     specialty: str
-    
+# this is to cover cases  Family Medicine/  Internal Medicine
+list_of_specialties=ReadJson().create_list()
 
-
-SYSTEM_INSTRUCTIONS = """
+SYSTEM_INSTRUCTIONS = f"""
 You are a helpful medical assistant. Your main task is to provide a diagnosis based on the 
 patient's symptoms.
 
 MANDATORY: SUGGEST ONLY ONE MEDICAL CONDITION.
 
-After providing the diagnosis, you must suggest ONE medical specialty that can treat the patient's condition.
+After providing the diagnosis, you must suggest ONE medical specialty from below that can treat the patient's condition.
+
+{list_of_specialties}
 
 MANDATORY: SUGGEST ONLY ONE SPECIALTY, WITHOUT ADDITIONAL EXPLANATIONS, AND DO NOT MAKE UP ANY ANSWERS.
 """
@@ -54,7 +56,12 @@ display_diagnosis_agent = Agent(
     instruction='''Display diagnosis for patient's symptoms and suggest medical specialty who can treat the patient based on the
     information below. Inform the user that these are preliminary diagnosis only.
 
-    {diagnosis}''',
+    {diagnosis}
+    
+    End with: Would you like me to assist you with finding the provider?    
+    '''
+    
+    ,
     
 )
 
