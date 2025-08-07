@@ -11,55 +11,6 @@ from google.adk.runners import Runner
 from google.genai import types
 
 
-async def check_insurance_match(params: Dict[str, Any]) -> Dict[str, Any]:
-    if not params or "doctor_info" not in params or "patient_insurance" not in params:
-        last_user_message = params.get("last_user_message", None)
-        if isinstance(last_user_message, str):
-            try:
-                data = json.loads(last_user_message)
-                doctor_info = data.get("doctor_info", {})
-                patient_insurance = data.get("patient_insurance", "")
-            except Exception:
-                doctor_info, patient_insurance = {}, ""
-        else:
-            doctor_info, patient_insurance = {}, ""
-    else:
-        doctor_info = params.get("doctor_info", {})
-        patient_insurance = params.get("patient_insurance", "")
-
-    accepted_plans = doctor_info.get("insurance_plans", [])
-    accepted_str = json.dumps(accepted_plans, indent=2)
-
-    prompt = f"""
-You are an expert insurance matching assistant.
-
-Doctor accepts these insurance plans:
-{accepted_str}
-
-Patient insurance plan:
-{patient_insurance}
-
-Answer only with JSON in this format:
-{{
-  "acceptsInsurance": true or false,
-  "reason": "explanation text"
-}}
-"""
-    llm = LiteLlm(model="openai/gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
-    response = await llm.chat_completion_async(
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0,
-    )
-    text = response.choices[0].message.content.strip()
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        return {
-            "acceptsInsurance": False,
-            "reason": "Could not parse LLM response as JSON.",
-        }
-
-
 insurance_agent = Agent(
     model=LiteLlm(model="openai/gpt-4o", api_key=os.getenv("OPENAI_API_KEY")),
     name="insurance_agent",
@@ -68,11 +19,15 @@ insurance_agent = Agent(
         "You are an expert insurance matching assistant. "
         "Your task is to determine if a patient's insurance is accepted by a doctor. "
         "The user will provide the doctor's accepted insurance plans and the patient's plan. "
-        "Analyze the provided information and **answer ONLY with JSON** in this format: "
+        "When checking, be flexible with plan variations (e.g., 'Blue Cross' matches 'Blue Cross Blue Shield'). "
+        "However, do not assume unrelated plans are compatible (e.g., 'Blue Cross' is not a match for 'Blue Shield of California'). "
+        "Provide a concise, direct reason for the match or non-match. "
+        "Answer ONLY with JSON in this format: "
         '{"acceptsInsurance": true or false, "reason": "explanation text"}'
     ),
-    tools=[],  # The agent no longer has any tools
+    tools=[],
 )
+
 session_service = InMemorySessionService()
 
 runner = Runner(
@@ -82,20 +37,18 @@ runner = Runner(
 )
 
 async def main():
-    # Define your structured data
     doctor_info = {
         "name": "Dr. Alice",
         "insurance_plans": ["Blue Cross", "United Healthcare", "Cigna PPO"],
     }
-    patient_insurance = "Blue Shield of California"
+    patient_insurance = "UNH"
 
-    # 🔑 The crucial change: A simple, natural language prompt with all the necessary info
     user_message_text = (
-        f"Dr. Alice's accepted plans are: {', '.join(doctor_info['insurance_plans'])}. "
-        f"Does she accept my insurance, which is: {patient_insurance}?"
+        f"Doctor accepts these insurance plans: {doctor_info['insurance_plans']}. "
+        f"Patient insurance plan: {patient_insurance}. "
+        "Please check if they match."
     )
 
-    # Create a new session
     session = await session_service.create_session(
         app_name="insurance_app",
         user_id="user_1",
