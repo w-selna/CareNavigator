@@ -1,59 +1,117 @@
-# distance_reranker_agent.py
-from google.adk.agents import Agent
-import googlemaps
-import os
 import json
+import os
+import asyncio
+import googlemaps
+from typing import Dict, Any
+from dotenv import load_dotenv
 
-gmaps = googlemaps.Client(key=os.getenv("Maps_API_KEY"))
+# Import Google ADK components
+from google.adk.agents import Agent
+from google.adk.models.lite_llm import LiteLlm
+from pathlib import Path
+# Load environment variables
+load_dotenv()
 
-def calculate_distance(patient_address: str, doctor_address: str) -> dict:
+# Initialize Google Maps client
+# Load environment variables from the correct path
+current_dir = Path(__file__).parent
+env_path = current_dir / '.env'
+load_dotenv(env_path)
+
+# Debug: Check if API key is loaded
+api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+if not api_key:
+    raise ValueError("GOOGLE_MAPS_API_KEY not found in environment variables")
+
+gmaps = googlemaps.Client(key=api_key)
+
+# --- Tool function for ADK ---
+def rerank_doctors_by_distance(patient_address: str) -> str:
+    """
+    Rerank doctors by driving distance to the patient's address.
+
+    Args:
+        patient_address: The user's full address or general location.
+
+    Returns:
+        str: Formatted string with top 3 doctors ranked by distance.
+    """
     try:
-        result = gmaps.distance_matrix(
-            origins=[patient_address],
-            destinations=[doctor_address],
-            mode="driving",
-            units="imperial"
-        )
-        miles = result["rows"][0]["elements"][0]["distance"]["text"]
-        return {"status": "success", "miles": miles}
-    except Exception as e:
-        return {"status": "error", "error_message": str(e)}
+        # current_dir = os.path.dirname(os.path.abspath(__file__))
+        # json_path = os.path.join(current_dir, "doctor_data.json")
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        # Go up to CareNavigator directory, then into assets
+        assets_path = os.path.join(os.path.dirname(current_dir), "assets", "doctor_data_test100.json")
 
-def rerank_doctors_by_distance(patient_address: str) -> dict:
-    try:
-        with open("doctors.json", "r") as f:
+        with open(assets_path, "r") as f:
             doctors = json.load(f)
     except Exception as e:
-        return {"status": "error", "error_message": f"Could not load doctor data: {str(e)}"}
+        return f"Error loading doctors: {e}"
 
     ranked = []
     for doc in doctors:
-        result = calculate_distance(patient_address, doc["address"])
-        if result["status"] == "success":
-            miles = float(result["miles"].replace("mi", "").strip())
+        try:
+            result = gmaps.distance_matrix(
+                origins=[patient_address],
+                destinations=[doc["address"]],
+                mode="driving",
+                units="imperial"
+            )
+            miles_text = result["rows"][0]["elements"][0]["distance"]["text"]
+            miles = float(miles_text.replace("mi", "").replace(",", "").strip())
             doc["distance"] = miles
-        else:
-            doc["distance"] = float("inf")
-        ranked.append(doc)
+            ranked.append(doc)
+        except Exception as e:
+            print(f"Error calculating distance for {doc.get('name', 'Unknown')}: {e}")
+            continue
 
-    # Sort and take top 3
-    sorted_doctors = sorted(ranked, key=lambda d: d["distance"])[:3]
+    # Get top 3 closest doctors
+    top_doctors = sorted(ranked, key=lambda d: d["distance"])[:3]
 
-    output = "\n".join(
-        f"{doc['name']} – {doc['distance']} mi – {doc.get('experience', '?')} yrs – rated {doc.get('score', '?')}"
-        for doc in sorted_doctors
+    if not top_doctors:
+        return "No doctors found within reasonable distance."
+
+    return "\n".join(
+        f"{doc['name']} – {doc['distance']} mi – "
+        f"{doc.get('experience', '?')} yrs – rated {doc.get('score', '?')}"
+        for doc in top_doctors
     )
 
-    return {
-        "status": "success",
-        "report": "Here are the top 3 closest doctors:\n\n" + output
-    }
 
-# NOTE: The agent variable MUST be named `root_agent`.
-root_agent = Agent(
-    name="distance_reranker_agent",
-    model="gpt-4o",  # OpenAI model
-    description="Reranks doctors based on user preferences and distance from the patient.",
-    instruction="You are an agent that finds nearby doctors based on preferences.",
+# --- Tool schema for OpenAI function calling (ADK compatible) ---
+distance_tool = {
+    "type": "function",
+    "function": {
+        "name": "rerank_doctors_by_distance",
+        "description": "Rerank doctors by driving distance to the patient's address. The list of doctors are given",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "patient_address": {
+                    "type": "string",
+                    "description": "The user's full address or general location."
+                }
+            },
+            "required": ["patient_address"]
+        }
+    }
+}
+
+# --- ADK Agent Definition with OpenAI via LiteLLM ---
+maps_agent = Agent(
+    name="maps_agent",
+    model=LiteLlm(model="gpt-4o"),  # Use OpenAI GPT-4o via LiteLLM
+    instruction="""You are a helpful medical assistant that finds doctors near patients. 
+    When a user provides their location, use the rerank_doctors_by_distance tool to find the 
+    closest doctors. 
+
+    Always be helpful and provide clear, formatted information about the doctors including:
+    - Doctor name
+    - Distance from patient
+    """,
+    description="An agent that helps patients find nearby doctors ranked by distance.",
     tools=[rerank_doctors_by_distance]
 )
+
+# --- Root Agent (this is the main agent definition) ---
+root_agent = maps_agent

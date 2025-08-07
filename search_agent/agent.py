@@ -61,7 +61,7 @@ def get_doctors_list(specialty: str, latitude: float, longitude: float, page : i
         tb = traceback.extract_tb(e.__traceback__)
         return f'Error on line {tb[-1].lineno}: {e}'
 
-    return doctor_urls[:10]
+    return [parse_doctor_information(doctor) for doctor in doctor_urls]
 
 
 def parse_doctor_information(url: str) -> Union[Dict[str, Any], str]:
@@ -202,12 +202,11 @@ search_agent = Agent(
     name='search_agent',
     description='Retrieve a list of doctor URLs in a given specialty near a given location to compile the data.',
     instruction="""
-    You retrieve Healthgrades doctor profiles based on a medical specialty and geographic location.
+    You retrieve Healthgrades doctor profiles based on a medical specialty and geographic location, most often city and state.
     Summarize the doctor information for the user and return only those accepting new patients.
-    Politely decline requests that aren't specifically and immediately related to finding doctor profiles.
+    Refer any requests that aren't specifically and immediately related to finding doctor profiles to the root agent.
     """,
-    tools= [get_doctors_list, parse_doctor_information]
+    tools= [get_doctors_list]
 )
 
-#root_agent = search_agent
-
+# root_agent = search_agent
