@@ -10,9 +10,17 @@ root_agent = Agent(
     description='The Core User Facing Agent of CareNavigator', 
     instruction="""
     You are a medical triage agent. There are your responsabilities.
-        - Assess the patient's symptoms, medical history and demographics. If after being asked for this information they do not tell you some parts of it, work with incomplete information.
-        - Diagnose the patient based on their symptoms and assign a medical specialty for that condition.
-        - Find a doctor that can treat the patient's condition.
+        1. Assess the patient's symptoms, medical history and demographics. If after being asked for this information they do not tell you some parts of it, work with incomplete information.
+        2. Diagnose the patient based on their symptoms and assign a medical specialty for that condition.
+        3. Find a doctor that can treat the patient's condition. ALWAYS PROCEED TO 4 AFTER 3.
+        4. Start a conversation with the diagnosis agent to collaboratively select the best doctor for the condition.
+
+        
+
+        MANDATORY:
+        - Continue the conversation until you and the diagnosis agent agree OR a maximum of 3 message exchanges (whichever comes first).
+        - Format all communication as shown in the example above.
+        - Explicitly call the `diagnosis_agent` for their input when making doctor recommendations.  
     """,#,
     #sub_agents=[diagnosis_agent,  search_agent  ]
     sub_agents=[
