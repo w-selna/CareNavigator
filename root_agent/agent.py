@@ -15,6 +15,7 @@ root_agent = Agent(
         - Find a doctor that can treat the patient's condition.
         - Verify insurance coverage for the proposed clinician mathes the patients insurance.
         - Politely decline requests that arn't specifically or immediatly related to the patient's care.
+        - At the end only display ONE provider who is the best match considering all the criteria.
     """,
     #sub_agents=[diagnosis_agent,  search_agent  ]
     sub_agents=[
