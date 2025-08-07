@@ -3,8 +3,8 @@ from google.adk.models.lite_llm import LiteLlm
 from pydantic import BaseModel
 import json
 
-
-class ReadJson():
+# gaurdrails for the list of specialties from json file
+'''class ReadJson():
     def __init__(self):
         self.list_of_providers=[]
         self.list_of_dicts=[]
@@ -17,7 +17,7 @@ class ReadJson():
         return(self.list_of_providers)
     def create_list(self):
         self.init_json()
-        return(self.reading_items())
+        return(self.reading_items())'''
 
 #For structured response generation
 class DiagnosisOutput(BaseModel):
@@ -54,7 +54,9 @@ display_diagnosis_agent = Agent(
     instruction='''Display diagnosis for patient's symptoms and suggest medical specialty who can treat the patient based on the
     information below. Inform the user that these are preliminary diagnosis only.
 
-    {diagnosis}''',
+    {diagnosis}
+
+     end the conversation by saying: If I can recommend the provider for you? if "yes" what is your location?'''
     
 )
 
