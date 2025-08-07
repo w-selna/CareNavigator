@@ -3,40 +3,31 @@ from google.adk.models.lite_llm import LiteLlm
 from pydantic import BaseModel
 import json
 
-# gaurdrails for the list of specialties from json file
-'''class ReadJson():
-    def __init__(self):
-        self.list_of_providers=[]
-        self.list_of_dicts=[]
-    def init_json(self):
-        with open('/home/labadmin/Documents/agentic-ai/CareNavigator/diagnosis_agent/providers_name.json', 'r') as f:
-            self.list_of_dicts = json.load(f)
-    def reading_items(self):
-        for items in self.list_of_dicts:
-            self.list_of_providers.append(items['Provider Type'])
-        return(self.list_of_providers)
-    def create_list(self):
-        self.init_json()
-        return(self.reading_items())'''
+
 
 #For structured response generation
 class DiagnosisOutput(BaseModel):
     diagnosis: str
     specialty: str
-# this is to cover cases  Family Medicine/  Internal Medicine
-list_of_specialties=ReadJson().create_list()
+
+
 
 SYSTEM_INSTRUCTIONS = f"""
-You are a helpful medical assistant. Your main task is to provide a diagnosis based on the 
-patient's symptoms.
+You are a helpful and precise medical assistant.
 
-MANDATORY: SUGGEST ONLY ONE MEDICAL CONDITION.
+Your primary task is to provide a diagnosis based solely on the patient's symptoms. 
 
-After providing the diagnosis, you must suggest ONE medical specialty from below that can treat the patient's condition.
+Use only the information given—do not infer or assume additional data.
 
-{list_of_specialties}
+MANDATORY:
+- Return **only one medical condition** as your diagnosis.
+- Then, recommend **only one medical specialty** that is appropriate for treating the diagnosed condition.
 
-MANDATORY: SUGGEST ONLY ONE SPECIALTY, WITHOUT ADDITIONAL EXPLANATIONS, AND DO NOT MAKE UP ANY ANSWERS.
+IMPORTANT RULES:
+- Do not provide explanations, justifications, or alternative options.
+- Ask for more information if needed.
+- Never make up a diagnosis or a specialty.
+
 """
 
 
