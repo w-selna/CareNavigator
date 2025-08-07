@@ -27,7 +27,7 @@ insurance_agent = Agent(
     ),
     tools=[],
 )
-
+'''
 session_service = InMemorySessionService()
 
 runner = Runner(
@@ -71,3 +71,4 @@ if __name__ == "__main__":
         print("Please set the OPENAI_API_KEY environment variable.")
     else:
         asyncio.run(main())
+'''
