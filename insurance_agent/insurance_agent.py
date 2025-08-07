@@ -12,9 +12,7 @@ from google.genai import types
 
 
 async def check_insurance_match(params: Dict[str, Any]) -> Dict[str, Any]:
-    # Sometimes params may be empty; try parsing JSON from the user message text
     if not params or "doctor_info" not in params or "patient_insurance" not in params:
-        # Try to find user message text containing JSON (a workaround)
         last_user_message = params.get("last_user_message", None)
         if isinstance(last_user_message, str):
             try:
@@ -86,14 +84,12 @@ runner = Runner(
     session_service=session_service,
 )
 
-# Compose a user message that includes doctor and patient insurance info as JSON string
 doctor_info = {
     "name": "Dr. Alice",
     "insurance_plans": ["Blue Cross", "United Healthcare", "Cigna PPO"],
 }
 patient_insurance = "Blue Shield of California"
 
-# Pass the data to the agent in a human-readable format
 user_message_text = f"Does Dr. Alice, who accepts {doctor_info['insurance_plans']}, accept my insurance, which is {patient_insurance}?"
 
 async def main():
