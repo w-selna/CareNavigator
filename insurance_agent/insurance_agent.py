@@ -12,7 +12,9 @@ from google.genai import types
 
 
 async def check_insurance_match(params: Dict[str, Any]) -> Dict[str, Any]:
+    # Sometimes params may be empty; try parsing JSON from the user message text
     if not params or "doctor_info" not in params or "patient_insurance" not in params:
+        # Try to find user message text containing JSON (a workaround)
         last_user_message = params.get("last_user_message", None)
         if isinstance(last_user_message, str):
             try:
@@ -63,10 +65,11 @@ Answer only with JSON in this format:
 insurance_agent = Agent(
     model=LiteLlm(model="openai/gpt-4o", api_key=os.getenv("OPENAI_API_KEY")),
     name="insurance_agent",
-    description="Agent that checks if a doctor's insurance plans match patient's insurance.",
+    description="Agent that checks if a doctor's insurance plans match a patient's insurance.",
     instruction=(
-        "Always call the 'check_insurance_match' tool using the session state values for 'doctor_info' "
-        "and 'patient_insurance' when the user asks about insurance matching."
+        "Use the 'check_insurance_match' tool to determine if a doctor accepts a patient's insurance plan."
+        "The tool requires 'doctor_info' (a dictionary with the doctor's details, including 'insurance_plans') "
+        "and 'patient_insurance' (the name of the patient's insurance plan)."
     ),
     tools=[check_insurance_match],
 )
@@ -83,16 +86,15 @@ runner = Runner(
     session_service=session_service,
 )
 
+# Compose a user message that includes doctor and patient insurance info as JSON string
 doctor_info = {
     "name": "Dr. Alice",
     "insurance_plans": ["Blue Cross", "United Healthcare", "Cigna PPO"],
 }
 patient_insurance = "Blue Shield of California"
 
-user_message_text = json.dumps({
-    "doctor_info": doctor_info,
-    "patient_insurance": patient_insurance
-})
+# Pass the data to the agent in a human-readable format
+user_message_text = f"Does Dr. Alice, who accepts {doctor_info['insurance_plans']}, accept my insurance, which is {patient_insurance}?"
 
 async def main():
     user_content = types.Content(role="user", parts=[types.Part(text=user_message_text)])
