@@ -6,6 +6,7 @@ from google.adk.agents.llm_agent import Agent
 from google.adk.models.lite_llm import LiteLlm
 from bs4 import BeautifulSoup
 from typing import Union, Dict, Any
+from insurance_agent.insurance_agent import insurance_agent
 
 
 def get_doctors_list(specialty: str, latitude: float, longitude: float, page : int = 1) -> Union[list[str], str]:
@@ -203,10 +204,13 @@ search_agent = Agent(
     description='Retrieve a list of doctor URLs in a given specialty near a given location to compile the data.',
     instruction="""
     You retrieve Healthgrades doctor profiles based on a medical specialty and geographic location, most often city and state.
-    Summarize the doctor information for the user and return only those accepting new patients.
+    Use your sub-agent, insurance_agent, to check if the doctor accepts the patient's insurance plan before returning the profile.
+    Summarize the doctor information for the user and return only those accepting new patients with mathching insurance.
     Refer any requests that aren't specifically and immediately related to finding doctor profiles to the root agent.
     """,
     tools= [get_doctors_list]
+    ,sub_agents = [insurance_agent]
 )
 
 # root_agent = search_agent
+
