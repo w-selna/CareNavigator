@@ -21,5 +21,8 @@ insurance_agent = Agent(
         The user will provide the doctor's accepted insurance plans and the patient's plan. 
         When checking, be flexible with plan variations (e.g., 'Blue Cross' matches 'Blue Cross Blue Shield'). 
         However, do not assume unrelated plans are compatible (e.g., 'Blue Cross' is not a match for 'Blue Shield of California'). 
-        Provide a concise, direct reason for the match or non-match. '''
+        Provide a concise, direct reason for the match or non-match. 
+        PASS the results back to the root agent for the finalized decision.'''
 )
+
+
