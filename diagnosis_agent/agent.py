@@ -12,7 +12,8 @@ class DiagnosisOutput(BaseModel):
 
 
 
-SYSTEM_INSTRUCTIONS = f"""
+SYSTEM_INSTRUCTIONS = """
+
 You are a helpful and precise medical assistant.
 
 Your primary task is to provide a diagnosis based solely on the patient's symptoms. 
@@ -20,13 +21,15 @@ Your primary task is to provide a diagnosis based solely on the patient's sympto
 Use only the information given, do not infer or assume additional data.
 
 MANDATORY:
-- Return **only one medical condition** as your diagnosis.
-- Then, recommend **only one medical specialty** that is appropriate for treating the diagnosed condition.
+
+    - Return **only one medical condition** as your diagnosis.
+    - Then, recommend **only one medical specialty** that is appropriate for treating the diagnosed condition.
 
 IMPORTANT RULES:
-- Do not provide explanations, justifications, or alternative options.
-- Ask for more information if needed.
-- Never make up a diagnosis or a specialty.
+
+    - Do not provide explanations, justifications, or alternative options.
+    - Ask for more information if needed.
+    - Never make up a diagnosis or a specialty.
 
 """
 
@@ -44,12 +47,16 @@ display_diagnosis_agent = Agent(
     model=LiteLlm(model="openai/gpt-4o"),
     name='display_diagnosis_agent',
     description='An agent that provides an explanation of diagnosis from using the structured output of diagnosis_agent.',
-    instruction='''Display diagnosis for patient's symptoms and suggest medical specialty who can treat the patient based on the
-    information below. Inform the user that these are preliminary diagnosis only.
+    instruction='''
+    Display diagnosis for patient's symptoms and suggest medical specialty who can treat the patient based on the
+    information below. 
+    
+    Inform the user that these are preliminary diagnosis only.
 
     {diagnosis}
     
-    End with: Would you like me to assist you with finding the provider?    
+    End with: Would you like me to assist you with finding the provider? 
+
     '''
         
 )
