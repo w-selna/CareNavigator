@@ -48,10 +48,9 @@ display_diagnosis_agent = Agent(
     name='display_diagnosis_agent',
     description='An agent that provides an explanation of diagnosis from using the structured output of diagnosis_agent.',
     instruction='''
-    Display diagnosis for patient's symptoms and suggest medical specialty who can treat the patient based on the
-    information below. 
+    Display diagnosis for patient's symptoms and suggestted medical specialty from the diagnosis agent. 
     
-    Inform the user that these are preliminary diagnosis only.
+    Inform the user that these are preliminary diagnosis only to assist them finding the specialist.
 
     {diagnosis}
     
